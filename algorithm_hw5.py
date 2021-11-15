@@ -1,4 +1,15 @@
 # Algorithm Homework 5
+# Jarus Soontornsing (Toni)
+# Nov 14, 2021
+
+from random import sample
+import random
+import time
+
+def num_random(num_range = 999, num_member = 10):
+    random.seed(time.time())
+    subset = sample([i for i in range(num_range)], num_member)
+    return subset
 
 # Init Test Environment
 test_array = []
@@ -139,3 +150,62 @@ print('\n#4 Merge Sort')
 print(merge_sort([88,17,52,65,72,25,65,21,21,28,29,60,48], True))
 for test in test_array:
     print(merge_sort(test, True))
+
+
+# End Homework #4, Below are experiments to benchmark sorting types -------------------
+
+def sort_number(sort_type,numarray,is_desc=False):
+    if sort_type == 0:
+        return selection_sort(numarray,is_desc)
+    elif sort_type == 1:
+        return bubble_sort(numarray,is_desc)
+    elif sort_type == 2:
+        return insertion_sort(numarray,is_desc)
+    elif sort_type == 3:
+        return merge_sort(numarray, is_desc)
+
+thisnumarray = []
+sort_type = {
+    0:"Selection",
+    1:"Bubble",
+    2:"Insertion",
+    3:"Merge"
+}
+
+def test_sort(test_cycle = 10000, num_range = 999, num_member = 10):
+    elapsed = []
+    sort_type_time_elapse = {}
+    print(f"Scenario > Count : {test_cycle}, Number Range : 0 - {num_range}, Array Member : {num_member}\n")
+    for i in range(len(sort_type)):
+        start = time.time()
+        for j in range(test_cycle):
+            thisnumarray = num_random(num_range,num_member)
+            thissort = sort_number(i,thisnumarray,True)
+            # print(thissort)
+        end = time.time()
+        elapsed.append(end - start)
+        print(f"{sort_type[i]} Time Elapsed : {elapsed[i]}")
+        sort_type_time_elapse[elapsed[i]] = sort_type[i]
+        elapsed_sort = selection_sort(elapsed)
+
+    # print(elapsed)
+    # print(sort_type_time_elapse)
+
+    print("Performance (From Fastest) : ", end='')
+    for i in range(len(sort_type_time_elapse)):
+        print(sort_type_time_elapse[elapsed_sort[i]],end = '')
+        if i < len(sort_type_time_elapse)-1:
+            print(" > ",end='')
+    print('\n--------------------------------------\n')
+
+
+# ⬇ Test start below this line ⬇
+# test_sort(test_cycle = 10000, num_range = 999, num_member = 10)
+# test_cycle = Time of each test
+# num_range = Range of number to random from 0
+# num_member = Member of each array
+
+print('\nTest Case : Verify Sort Type Performance\n')
+
+test_sort(10000,999,10)
+test_sort(100000,999,10)
